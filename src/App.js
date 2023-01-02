@@ -1,24 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import CreateNote from './Components/CreateNote';
+import Header from './Components/Header';
+import Image from './Components/Image';
+import React, {useState, useEffect} from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import CanvasP from './Components/CanvasP';
 
 function App() {
+  
+  const[dark, setDark]=useState(false);
+  useEffect(() => {
+    if(dark){
+      document.body.classList.add('dark');
+      
+
+    }
+    else{
+      document.body.classList.remove('dark');
+    }
+  }, [dark]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      
+      <div className={!dark?"App": "App-dark"}>
+      
+        <Header dark={dark}/>
+        <button type="button" className={dark? "btn btn-light pos mode":"btn btn-dark pos mode"} data-bs-toggle="button" onClick={() => setDark(!dark)} >{dark?'Light Mode' : 'Dark Mode'}</button>
+        <CreateNote dark={dark}/>
+        <Routes>
+          <Route path='/draw' element={<CanvasP />} >
+          </Route>
+        </Routes>
+      
+        
+        
+      </div>
+    
+    </Router>
   );
 }
 
