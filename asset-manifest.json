@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.2e190acc.css",
-    "main.js": "/react-gh-pages/static/js/main.efa928b6.js",
-    "static/js/236.6e0a8fae.chunk.js": "/react-gh-pages/static/js/236.6e0a8fae.chunk.js",
-    "static/js/703.1cec7ef7.chunk.js": "/react-gh-pages/static/js/703.1cec7ef7.chunk.js",
-    "static/js/258.472881d3.chunk.js": "/react-gh-pages/static/js/258.472881d3.chunk.js",
-    "static/js/787.9243050f.chunk.js": "/react-gh-pages/static/js/787.9243050f.chunk.js",
-    "index.html": "/react-gh-pages/index.html",
-    "main.2e190acc.css.map": "/react-gh-pages/static/css/main.2e190acc.css.map",
-    "main.efa928b6.js.map": "/react-gh-pages/static/js/main.efa928b6.js.map",
-    "236.6e0a8fae.chunk.js.map": "/react-gh-pages/static/js/236.6e0a8fae.chunk.js.map",
-    "703.1cec7ef7.chunk.js.map": "/react-gh-pages/static/js/703.1cec7ef7.chunk.js.map",
-    "258.472881d3.chunk.js.map": "/react-gh-pages/static/js/258.472881d3.chunk.js.map",
-    "787.9243050f.chunk.js.map": "/react-gh-pages/static/js/787.9243050f.chunk.js.map"
+    "main.css": "/React-Projects/static/css/main.2e190acc.css",
+    "main.js": "/React-Projects/static/js/main.11fe85d8.js",
+    "static/js/236.6e0a8fae.chunk.js": "/React-Projects/static/js/236.6e0a8fae.chunk.js",
+    "static/js/703.1cec7ef7.chunk.js": "/React-Projects/static/js/703.1cec7ef7.chunk.js",
+    "static/js/258.472881d3.chunk.js": "/React-Projects/static/js/258.472881d3.chunk.js",
+    "static/js/787.9243050f.chunk.js": "/React-Projects/static/js/787.9243050f.chunk.js",
+    "index.html": "/React-Projects/index.html",
+    "main.2e190acc.css.map": "/React-Projects/static/css/main.2e190acc.css.map",
+    "main.11fe85d8.js.map": "/React-Projects/static/js/main.11fe85d8.js.map",
+    "236.6e0a8fae.chunk.js.map": "/React-Projects/static/js/236.6e0a8fae.chunk.js.map",
+    "703.1cec7ef7.chunk.js.map": "/React-Projects/static/js/703.1cec7ef7.chunk.js.map",
+    "258.472881d3.chunk.js.map": "/React-Projects/static/js/258.472881d3.chunk.js.map",
+    "787.9243050f.chunk.js.map": "/React-Projects/static/js/787.9243050f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2e190acc.css",
-    "static/js/main.efa928b6.js"
+    "static/js/main.11fe85d8.js"
   ]
 }
