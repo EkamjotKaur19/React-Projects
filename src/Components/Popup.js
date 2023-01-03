@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import Download from './Download';
+import React  from 'react'
 
 export default function Popup({content, handleClose, file}) {
 

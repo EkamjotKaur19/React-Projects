@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
-import CanvasP from './CanvasP';
+import React, {useState, useEffect} from 'react';
 import Note from './Note';
-import ReactCanvasPaint from 'react-canvas-paint'
 import 'react-canvas-paint/dist/index.css'
-import { Link } from "react-router-dom"
+import axios from 'axios';
+import noteService from '../services/notes'
 
 export default function CreateNote({dark}) {
   const [notes, setNotes] = useState([]);
@@ -12,7 +11,7 @@ export default function CreateNote({dark}) {
   const [searchTerm, setSearchTerm]=useState('');
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
-  const [canvas, setCanvas] = useState(false);
+  const [showpin, setShowPin] = useState(false);
   const [note, setNote] = useState({
     title:"",
     content:"",
@@ -22,31 +21,51 @@ export default function CreateNote({dark}) {
     pin:false
   });
 
+  useEffect(() => {
+    console.log('effect')
+    noteService
+      .getAll()
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  console.log('render', notes.length, 'notes')
+
 
 
   const addNote = (newNote) =>{
     note.colors=color
     note.file=file
     note.pin=pin
-    setNotes((prevValue) => {
-      return [...prevValue, newNote];
-    });
+    
     setColor('white');
+    noteService.create(newNote).then(response => setNotes((prevValue) => {
+      return [...prevValue, newNote];
+    }))
     
   }
 
   
+
+  
   function editNote(note, title, content) {
     note.title = title;
-    note.content = content;
-    setNotes([...notes]);
+    note.content = content;    
+    noteService.update(note.id, note).then(response => {
+      setNotes([...notes]);
+    })
   }
 
 
-  const deleteNotes =(id) =>{
-    setNotes((preValue) => {
-      return [...preValue.filter((note, index) => index !== id)];
-    });
+  const deleteNotes =(id, note) =>{
+    
+
+    noteService.delNote(id, note).then( response => {
+      setNotes((preValue) => {
+        return [...preValue.filter((note, index) => index !== id)];
+      });
+    })
   }
 
   
@@ -118,7 +137,7 @@ export default function CreateNote({dark}) {
 
   const changeColors = (notes) => {
     notes.map((note) => {
-      note.colors='yellow'
+      return note.colors='yellow'
     })
   }
 
@@ -133,6 +152,10 @@ export default function CreateNote({dark}) {
     setPin(true);
   }
 
+  const handlePinned = () => {
+    setShowPin(!showpin);
+  }
+
   
 
   return (
@@ -141,6 +164,8 @@ export default function CreateNote({dark}) {
         <button className={!dark?"search-btn": 'search-btn dark'} onClick={searchNote}><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
       </div>
+
+      <button type="button" className="col col-1 btn " onClick={handlePinned}>Show only Pinned</button>
       
       <form className='create-form' style={{backgroundColor:color}} >{ isExpanded && 
         (<input  value={note.title} type='text' placeholder='Take a note' name='title' onChange={handleChange}  style={{backgroundColor:color} } />) }
@@ -199,11 +224,14 @@ export default function CreateNote({dark}) {
             onDelete={deleteNotes}
             id={index}
             setNote={setNote}
+            setNotes={setNotes}
+            notes={notes}
             editNote={editNote}
             note={note}
             color={note.colors}
             file={note.file}
             pin={note.pin}
+            showpin={showpin}
           />
         ))}
     </div>

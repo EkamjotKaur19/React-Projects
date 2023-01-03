@@ -1,0 +1,47 @@
+{
+  "notes": [
+    {
+      "title": "",
+      "content": "HTML is not easy",
+      "searched": false,
+      "file": "",
+      "pin": false,
+      "colors": "white",
+      "id": 1
+    },
+    {
+      "title": "",
+      "content": "Browser can execute only JavaScript. ok",
+      "colors": "white",
+      "searched": false,
+      "file": "",
+      "pin": false,
+      "id": 2
+    },
+    {
+      "title": "",
+      "content": "GET and POST are most important HTTP reuqest methods",
+      "colors": "white",
+      "searched": false,
+      "file": "",
+      "pin": false,
+      "id": 3
+    },
+    {
+      "title": "",
+      "content": "Ekam",
+      "file": "",
+      "pin": false,
+      "colors": "white",
+      "id": 5
+    },
+    {
+      "title": "",
+      "content": "Ekamjot Kaur Chugh",
+      "file": "",
+      "pin": false,
+      "colors": "white",
+      "id": 6
+    }
+  ]
+}
