@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import Note from './Note';
-import 'react-canvas-paint/dist/index.css'
-import axios from 'axios';
 import noteService from '../services/notes'
 
 export default function CreateNote({dark}) {
@@ -12,6 +10,7 @@ export default function CreateNote({dark}) {
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
   const [showpin, setShowPin] = useState(false);
+  const [icons, setIcons] = useState(true);
   const [note, setNote] = useState({
     title:"",
     content:"",
@@ -49,9 +48,10 @@ export default function CreateNote({dark}) {
   
 
   
-  function editNote(note, title, content) {
+  function editNote(note, title, content, pin) {
     note.title = title;
-    note.content = content;    
+    note.content = content;  
+    note.pin=pin;  
     noteService.update(note.id, note).then(response => {
       setNotes([...notes]);
     })
@@ -129,7 +129,7 @@ export default function CreateNote({dark}) {
       file:note.file,
       pin:note.pin
     });
-    setFile('');
+    setFile(' ');
     setPin(false);
     
     event.preventDefault();
@@ -164,8 +164,6 @@ export default function CreateNote({dark}) {
         <button className={!dark?"search-btn": 'search-btn dark'} onClick={searchNote}><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
       </div>
-
-      <button type="button" className="col col-1 btn " onClick={handlePinned}>Show only Pinned</button>
       
       <form className='create-form' style={{backgroundColor:color}} >{ isExpanded && 
         (<input  value={note.title} type='text' placeholder='Take a note' name='title' onChange={handleChange}  style={{backgroundColor:color} } />) }
@@ -219,6 +217,7 @@ export default function CreateNote({dark}) {
 
           
         {notes.map((note,index) => (
+          
           <Note 
             key={index}
             onDelete={deleteNotes}
@@ -232,8 +231,10 @@ export default function CreateNote({dark}) {
             file={note.file}
             pin={note.pin}
             showpin={showpin}
+            icons={icons}
           />
         ))}
+        
     </div>
   )
 }

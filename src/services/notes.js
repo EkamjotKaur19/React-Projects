@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
 
 const getAll = () => {
   return axios.get(baseUrl)
@@ -14,7 +14,7 @@ const update = (id, newObject) => {
 }
 
 const delNote = (id, note) => {
-    return axios.delete(`${baseUrl}/${id}`, {data : note});
+  return axios.delete(`${baseUrl}/${id}`, {data : note});
 }
 
 export default { getAll, create, update, delNote }

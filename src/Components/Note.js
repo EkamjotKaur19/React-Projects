@@ -3,8 +3,9 @@ import Popup from './Popup'
 import EditPop from './EditPop'
 import Download from './Download'
 import axios from 'axios'
+import noteService from '../services/notes'
 
-export default function Note({ onDelete, id, setNote, setNotes, notes, editNote, note, color, file, pin, showpin}) {
+export default function Note({ onDelete, id, setNote, setNotes, notes, editNote, note, color, file, pin, showpin, icons}) {
   const [isOpen, setIsOpen] = useState(false);
   const [displayForm, setForm] = useState(false);
   const [downPop, setDownPop]=useState(false)
@@ -30,9 +31,8 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
   const handlePop = () => {
     setIsOpen(!isOpen);
   }
-
-  const togglePin = (id) => {
-    console.log(id);
+  {/*
+  console.log(id);
     const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(n => n.id === id)
     console.log(note);
@@ -42,30 +42,52 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
     axios.put(url, changedNote).then(response => {
       setNotes(notes.map(n => n.id !== id ? n : response.data))
     })
+*/}
+
+  const togglePin = (id) => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    console.log(note);
+    const changedNote = { ...note, pin: !note.pin }
+
+    noteService.update(url, changedNote).then(response => {
+      setNotes(notes.map(n => n.id !== id ? n : response.data))
+    })
+
+  }
+
+  const handleEditForm = () => {
+    icons=!icons;
+    setForm(!displayForm);
+  }
+
+  const handleDownPop = () => {
+    icons=!icons;
+    setDownPop(!downPop);
   }
 
 
   return (
     <>
     <div className="note" style={{backgroundColor:color}} >
-    <p  >{pin ? <i className="pin fa-solid fa-map-pin"></i> : ""}</p>
+    <p onClick={togglePin} >{pin ? <i className="pin fa-solid fa-map-pin"></i> : ""}</p>
       <div>
-        {file!=='' && <img className='note-img' src={file} alt='' onClick={handlePop} />}
+        {file!==' ' && <img className='note-img' src={file} alt='' onClick={handlePop} />}
         <h1 >{note.title}</h1>
         
-        <p className={note.searched ?"high-text":null} onClick={togglePopup}>{file===''? note.content.substring(0,150):note.content.substring(0,21)}</p>
+        <p className={note.searched ?"high-text":null} onClick={togglePopup}>{file===' '? note.content.substring(0,200):note.content.substring(0,21)}</p>
       </div>
       
       
-      <button className={!displayForm? 'note-button show' : 'hide'}  onClick={() => onDelete(id, note)}>
+      <button className={icons? 'note-button show' : 'note-button hide'}  onClick={() => onDelete(id, note)}>
       <i className="fa-solid fa-trash"></i>
       </button>
 
-      <button className={!displayForm? 'note-button show' : 'hide'} onClick={() => setForm(!displayForm)}>
+      <button className={icons? 'note-button show' : 'hide'} onClick={() => handleEditForm()}>
         Edit
       </button>
 
-      <button className={!displayForm? 'note-button show' : 'hide'} onClick={() => setDownPop(!downPop)}>
+      <button className={icons? 'note-button show' : 'hide'} onClick={() =>  handleDownPop()}>
         Download
       </button>
 
