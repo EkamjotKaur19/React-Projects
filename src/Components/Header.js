@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Register from './Register';
 
 export default function Header({dark}) {
+    
 
     
 
@@ -16,11 +18,14 @@ export default function Header({dark}) {
         <div className={!dark?'header':'header-dark'}>
             {logo}
             <span className={!dark?'head':'head darker'}>Keep</span>
+            
 
             
               
         </div>
         <hr className={!dark?'head-hr':'head-hr-dark'}/>
+
+        
         </>
     );
 }

@@ -21,7 +21,6 @@ export default function EditPop({displayForm, handleEdit, setForm, note}) {
             <form
                 onSubmit={handleEdit}
                 className={displayForm ? "edit-form show" : " hide"}>
-                <p onClick={handlePin} ><i className="pin fa-solid fa-map-pin"></i> </p>
                 <input placeholder="title" value={note.title}  />
                 <input placeholder="content" value={inpCon} onChange={handleChange} />
                 <input type="submit" />

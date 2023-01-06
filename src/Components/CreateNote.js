@@ -1,16 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import Note from './Note';
 import noteService from '../services/notes'
+import loginService from '../services/login'
+import Register from './Register';
+import Login from './Login';
 
 export default function CreateNote({dark}) {
   const [notes, setNotes] = useState([]);
+  const [form, setForm]=useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [color, setColor] = useState('white');
   const [searchTerm, setSearchTerm]=useState('');
+  const [reg, setReg]=useState(false);
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
   const [showpin, setShowPin] = useState(false);
   const [icons, setIcons] = useState(true);
+  const [login, setLogin] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUsername] = useState('') 
+  const [password, setPassword] = useState('') 
+  const [logged, setLogged] = useState(false);
+  const [user, setUser] = useState(reg)
   const [note, setNote] = useState({
     title:"",
     content:"",
@@ -22,21 +33,54 @@ export default function CreateNote({dark}) {
 
   useEffect(() => {
     console.log('effect')
+    
+  }, [])
+
+  const handleReg = () =>{
+    setReg(!reg);
+  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    console.log('logging in with', username, password);
+    setLogin(!login);
+    console.log(login)
+    try {
+        const user = await loginService.login({
+          username, password,
+        })
+        noteService.setToken(user.token)
+        setUser(user)
+        setUsername('')
+        setPassword('')
+        noteService
+      .getAll(user.token)
+      .then(response => {
+        console.log('logged in')
+        setNotes(response.data)
+        setLogged(!login);
+      })
+      } catch (exception) {
+        alert('Wrong credentials')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+  }
+
+  const handleSearchChange = () => {
     noteService
       .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setNotes(response.data)
       })
-  }, [])
-  console.log('render', notes.length, 'notes')
+  }
 
-
-
-  const addNote = (newNote) =>{
+  const addNote = (newNote) =>{ 
     note.colors=color
     note.file=file
     note.pin=pin
+    {console.log(pin)}
     
     setColor('white');
     noteService.create(newNote).then(response => setNotes((prevValue) => {
@@ -44,9 +88,6 @@ export default function CreateNote({dark}) {
     }))
     
   }
-
-  
-
   
   function editNote(note, title, content, pin) {
     note.title = title;
@@ -59,8 +100,6 @@ export default function CreateNote({dark}) {
 
 
   const deleteNotes =(id, note) =>{
-    
-
     noteService.delNote(id, note).then( response => {
       setNotes((preValue) => {
         return [...preValue.filter((note, index) => index !== id)];
@@ -122,6 +161,7 @@ export default function CreateNote({dark}) {
   }
 
   const  submitButton = (event) => {
+    console.log('ok')
     addNote(note);
     setNote({
       title: "",
@@ -129,22 +169,18 @@ export default function CreateNote({dark}) {
       file:note.file,
       pin:note.pin
     });
-    setFile(' ');
+    setFile('');
     setPin(false);
     
     event.preventDefault();
   }
 
-  const changeColors = (notes) => {
-    notes.map((note) => {
-      return note.colors='yellow'
+  const searchNote = (id) => {
+    console.log(id);
+    noteService.getOne(id, note).then(response => {
+      setNotes(notes.filter((note)=>note.content.toLowerCase().includes(searchTerm.toLowerCase())));
     })
-  }
-
-
-
-  const searchNote = () => {
-    changeColors(notes.filter((note)=>note.content.toLowerCase().includes(searchTerm.toLowerCase())));
+    
   }
 
   const handlePin = () => {
@@ -152,20 +188,50 @@ export default function CreateNote({dark}) {
     setPin(true);
   }
 
-  const handlePinned = () => {
-    setShowPin(!showpin);
+  const toggleReg = () => {
+    setReg(!reg);
+    setForm(!form);
   }
-
   
 
   return (
+    <>
+      {!logged && 
+      <div className="log-cont">
+      <div className="log-wrapper">
+          <h1 className="log-title">SIGN IN</h1>
+          <form className="log" onSubmit={handleLogin} >
+          <input  type="text"
+              value={username}
+              name="Username"
+              className="log"
+              onChange={({ target }) => setUsername(target.value)}/>
+          <input  type="password"
+              value={password}
+              name="Password"
+              className="log"
+              onChange={({ target }) => setPassword(target.value)}/>
+          <button className="log-btn" type="submit">LOGIN</button>
+          </form>
+      </div>
+    </div>
+       }
+    
+    
     <div className={dark?"dark":"white"}>
       <div className="search-box">
-        <button className={!dark?"search-btn": 'search-btn dark'} onClick={searchNote}><i className="fa-solid fa-magnifying-glass"></i></button>
+        <button className={!dark?"search-btn": 'search-btn dark'} onClick={(id)=>{searchNote(id)}} ><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
+        <button className={!dark?"search-cross": 'search-cross-dark'} onClick={handleSearchChange} ><i className="fa-solid fa-xmark"></i></button>
       </div>
+
+      <button className='reg-btn' onClick={handleReg} >Register</button>
+      {reg && <Register handleClose={toggleReg} />}
+
+
       
-      <form className='create-form' style={{backgroundColor:color}} >{ isExpanded && 
+      <form className='create-form' style={{backgroundColor:color}} >
+        { isExpanded && 
         (<input  value={note.title} type='text' placeholder='Take a note' name='title' onChange={handleChange}  style={{backgroundColor:color} } />) }
         <p>
           <textarea
@@ -182,8 +248,6 @@ export default function CreateNote({dark}) {
           
         </p>
         {isExpanded && <div className="bottom">
-
-
           <div className="colors">
             <input  type="file" className='col image ' onChange={handleUpload}  /> 
             <button type="button" className="col col-1 btn " onClick={handleBlue} ></button>
@@ -194,10 +258,6 @@ export default function CreateNote({dark}) {
             <button type="button" className="col col-6 btn " onClick={handleSixth}></button>
             
           </div>
-          {/*} {console.log(canvas)}
-          <Link to='/draw' className="canvas btns">Draw</Link>
-      {console.log(canvas)} */}
-          
           <button className='close btns' onClick={submitButton}>
             Close
           </button>
@@ -213,10 +273,9 @@ export default function CreateNote({dark}) {
         </div>}
         
       </form>
+      
 
-
-          
-        {notes.map((note,index) => (
+       {notes && notes.map((note,index) => (
           
           <Note 
             key={index}
@@ -228,13 +287,13 @@ export default function CreateNote({dark}) {
             editNote={editNote}
             note={note}
             color={note.colors}
-            file={note.file}
+            file={note.file!=='' ? note.file : ' ' }
             pin={note.pin}
             showpin={showpin}
             icons={icons}
           />
-        ))}
-        
+      ))}
     </div>
+    </>
   )
 }

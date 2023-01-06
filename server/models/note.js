@@ -1,16 +1,6 @@
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', true)
-const url ='mongodb+srv://ekamjot19:Ekamjot@cluster0.uyzqpki.mongodb.net/noteApp?retryWrites=true&w=majority'
 
-console.log('connecting to', url)
-
-mongoose.connect(url)
-  .then(result => {
-    console.log('connected to MongoDB')
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
 
 const noteSchema = new mongoose.Schema({
   title:String,
@@ -20,6 +10,10 @@ const noteSchema = new mongoose.Schema({
   file:String,
   pin:Boolean,
   date: Date,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 noteSchema.set('toJSON', {

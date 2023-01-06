@@ -72,10 +72,10 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
     <div className="note" style={{backgroundColor:color}} >
     <p onClick={togglePin} >{pin ? <i className="pin fa-solid fa-map-pin"></i> : ""}</p>
       <div>
-        {file!==' ' && <img className='note-img' src={file} alt='' onClick={handlePop} />}
+        {file!==" " && <img className='note-img' src={file}  onClick={handlePop} />}
         <h1 >{note.title}</h1>
         
-        <p className={note.searched ?"high-text":null} onClick={togglePopup}>{file===' '? note.content.substring(0,200):note.content.substring(0,21)}</p>
+        <p className={note.searched ?"high-text":null} onClick={togglePopup}>{file===" "? note.content.substring(0,200):note.content.substring(0,21)}</p>
       </div>
       
       
@@ -90,6 +90,7 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
       <button className={icons? 'note-button show' : 'hide'} onClick={() =>  handleDownPop()}>
         Download
       </button>
+
 
 
       
