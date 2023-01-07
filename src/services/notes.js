@@ -7,13 +7,18 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
+const getUserNotes = (userId) =>{
+  
+}
+
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  console.log('hy')
+  
+  return axios.get(baseUrl);
 
 }
 
-const getOne = (id, note) => {
+const getOne = (id ) => {
   return axios.get(`${baseUrl}/${id}`)
 }
 

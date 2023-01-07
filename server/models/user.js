@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   username: String,
   name: String,
   passwordHash: String,
-  users: [
+  notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Note'

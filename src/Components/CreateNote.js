@@ -54,7 +54,7 @@ export default function CreateNote({dark}) {
         setUsername('')
         setPassword('')
         noteService
-      .getAll(user.token)
+      .getAll()
       .then(response => {
         console.log('logged in')
         setNotes(response.data)
@@ -84,7 +84,12 @@ export default function CreateNote({dark}) {
     
     setColor('white');
     noteService.create(newNote).then(response => setNotes((prevValue) => {
-      return [...prevValue, newNote];
+      if(prevValue){
+        return [...prevValue, newNote];
+      }
+      else{
+        return [newNote]
+      }
     }))
     
   }
@@ -218,7 +223,7 @@ export default function CreateNote({dark}) {
        }
     
     
-    <div className={dark?"dark":"white"}>
+    {logged && <div className={dark?"dark":"white"}>
       <div className="search-box">
         <button className={!dark?"search-btn": 'search-btn dark'} onClick={(id)=>{searchNote(id)}} ><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
@@ -293,7 +298,7 @@ export default function CreateNote({dark}) {
             icons={icons}
           />
       ))}
-    </div>
+    </div> }
     </>
   )
 }
