@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import Note from './Note';
 import noteService from '../services/notes'
+
+import userService from '../services/users'
 import loginService from '../services/login'
 import Register from './Register';
 import Login from './Login';
+import { Link } from 'react-router-dom';
 
-export default function CreateNote({dark}) {
+export default function CreateNote({dark, reg}) {
   const [notes, setNotes] = useState([]);
-  const [form, setForm]=useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [color, setColor] = useState('white');
   const [searchTerm, setSearchTerm]=useState('');
-  const [reg, setReg]=useState(false);
+  
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
   const [showpin, setShowPin] = useState(false);
@@ -21,7 +23,7 @@ export default function CreateNote({dark}) {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [logged, setLogged] = useState(false);
-  const [user, setUser] = useState(reg)
+  const [user, setUser] = useState(false)
   const [note, setNote] = useState({
     title:"",
     content:"",
@@ -36,9 +38,7 @@ export default function CreateNote({dark}) {
     
   }, [])
 
-  const handleReg = () =>{
-    setReg(!reg);
-  }
+  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -52,12 +52,20 @@ export default function CreateNote({dark}) {
         noteService.setToken(user.token)
         setUser(user)
         setUsername('')
-        setPassword('')
-        noteService
-      .getAll()
-      .then(response => {
-        console.log('logged in')
-        setNotes(response.data)
+        setPassword('');
+        console.log(user.id)
+        userService.getOne(user.id).then(noteList => {
+          for(let i=0; i<noteList.length; i++){
+           setNotes((prevValue)=>{
+            if(prevValue){
+              return [...prevValue, noteList[i]];
+            }
+            else{
+              return [noteList[i]]
+            }
+           })
+           console.log(notes)
+          }
         setLogged(!login);
       })
       } catch (exception) {
@@ -67,6 +75,8 @@ export default function CreateNote({dark}) {
         }, 5000)
       }
   }
+
+  
 
   const handleSearchChange = () => {
     noteService
@@ -193,10 +203,7 @@ export default function CreateNote({dark}) {
     setPin(true);
   }
 
-  const toggleReg = () => {
-    setReg(!reg);
-    setForm(!form);
-  }
+  
   
 
   return (
@@ -217,25 +224,25 @@ export default function CreateNote({dark}) {
               className="log"
               onChange={({ target }) => setPassword(target.value)}/>
           <button className="log-btn" type="submit">LOGIN</button>
+          <Link to='/register' ><button className="log-text" > New user? Register First</button></Link> 
           </form>
       </div>
     </div>
        }
     
     
-    {logged && <div className={dark?"dark":"white"}>
+    {logged &&   <div className={dark?"dark":"white"}>
       <div className="search-box">
         <button className={!dark?"search-btn": 'search-btn dark'} onClick={(id)=>{searchNote(id)}} ><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
         <button className={!dark?"search-cross": 'search-cross-dark'} onClick={handleSearchChange} ><i className="fa-solid fa-xmark"></i></button>
       </div>
 
-      <button className='reg-btn' onClick={handleReg} >Register</button>
-      {reg && <Register handleClose={toggleReg} />}
+      
 
 
       
-      <form className='create-form' style={{backgroundColor:color}} >
+    <form className='create-form' style={{backgroundColor:color}} >
         { isExpanded && 
         (<input  value={note.title} type='text' placeholder='Take a note' name='title' onChange={handleChange}  style={{backgroundColor:color} } />) }
         <p>
@@ -279,9 +286,7 @@ export default function CreateNote({dark}) {
         
       </form>
       
-
-       {notes && notes.map((note,index) => (
-          
+       {notes ? notes.map((note,index) => (
           <Note 
             key={index}
             onDelete={deleteNotes}
@@ -297,7 +302,7 @@ export default function CreateNote({dark}) {
             showpin={showpin}
             icons={icons}
           />
-      ))}
+      )) : null}
     </div> }
     </>
   )

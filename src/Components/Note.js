@@ -75,7 +75,7 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
         {file!==" " && <img className='note-img' src={file}  onClick={handlePop} />}
         <h1 >{note.title}</h1>
         
-        <p className={note.searched ?"high-text":null} onClick={togglePopup}>{file===" "? note.content.substring(0,200):note.content.substring(0,21)}</p>
+        <p onClick={togglePopup}>{file===" " && note.content!==undefined? note.content.substring(0,200):note.content.substring(0,21)}</p>
       </div>
       
       

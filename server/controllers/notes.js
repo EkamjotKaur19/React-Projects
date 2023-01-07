@@ -26,7 +26,6 @@ notesRouter.get('/:id', (request, response, next) => {
     }
     
     Note.findOne(note).then(result => {
-      console.log(note)
         if (note) {
           response.json(note)
         } else {
@@ -35,21 +34,7 @@ notesRouter.get('/:id', (request, response, next) => {
       })
 })
 
-notesRouter.get('/:user', (request, response, next) => {
-  const body = request.body
 
-  const id = {
-    user : body.user
-  }
-  console.log(id)
-  Note.findOne(id.note).then(result => {
-      if (id.note) {
-        response.json(note)
-      } else {
-        response.status(404).end()
-      }
-    })
-})
 
 notesRouter.post('/', async (request, response) => {
   const body = request.body;

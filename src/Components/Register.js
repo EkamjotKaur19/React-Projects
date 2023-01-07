@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 
 import registerService from '../services/register'
 
-export default function Register({reg, handleClose}) {
+export default function Register({handleReg2, toggleReg}) {
+  const navigate = useNavigate;
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [name, setName] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(false)
 
-  const setReg = ()=> {
-    reg=!reg;
-  }
+  
 
 
   const handleReg = async (event) => {
@@ -21,55 +21,46 @@ export default function Register({reg, handleClose}) {
         const useri = registerService.register({
           name, username, password,
         })
-        setUser(!user)
-        console.log(useri)
+        console.log(useri);
+        alert('CLICK ON CLOSE TO LOGIN')
         
       } catch (exception) {
+        alert('error');
         console.log('error');
       }
   }
 
   
   return (
-    <div className="reg-box">
-        <div className="reg-box2">
-
-        
-
-      <h2>Register</h2>
-      <form onSubmit={handleReg}>
-        <div>
-          Name
-            <input
+    <div className="reg-cont">
+        <div className="reg-wrapper">
+          <h2 className="log-title">Register</h2>
+          <form className="log" onSubmit={handleReg}>
+          <input
             type="text"
             value={name}
             name="name"
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
-        <div>
-          username
-            <input
+            className="log"
+            onChange={({ target }) => setName(target.value)}/>
+          <input
             type="text"
             value={username}
             name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-            <input
+            className="log"
+            onChange={({ target }) => setUsername(target.value)}/>
+          <input
             type="password"
             value={password}
             name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">register</button>
-        <button className='pop-close' onClick={handleClose}>
-                Close
-            </button>
+            className="log"
+            onChange={({ target }) => setPassword(target.value)}/>
+          <button className="reg-btn" type="submit">register</button>
+          <h3 className={user? 'show' : 'hide'} >Registered Successfully</h3>
+          
       </form>
+      <Link to='/React-Projects/' ><button className='reg-btn' onClick={toggleReg}>
+          Close
+        </button></Link>
       </div>
       </div>
   )
