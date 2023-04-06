@@ -6,6 +6,7 @@ import Header from './Components/Header';
 import React, {useState, useEffect} from 'react';
 import Register from './Components/Register'
 import Signup from './Components/Signup';
+import Footer from './Components/Footer';
 
 
 
@@ -40,7 +41,6 @@ function App() {
   return (
     <>
       <Router>
-      
         <div className={!dark?"App": "App-dark"}>
         <Header dark={dark}/>
         <button type="button" className={dark? "btn btn-light pos mode":"btn btn-dark pos mode"} data-bs-toggle="button" onClick={() => setDark(!dark)} >{dark?'Light Mode' : 'Dark Mode'}</button>
@@ -50,6 +50,7 @@ function App() {
           <Route path='/register' exact element={ <Register toggleReg={toggleReg}  />} />
           <Route path='/signup' exact element={ <Signup logged={logged} setLogged={setLogged} />  } />
         </Routes>
+        <Footer />
         
         
       

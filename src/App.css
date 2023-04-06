@@ -18,7 +18,7 @@
 }
 
 .header{
-  height:50px;
+  height:55px;
   display: flex;
   flex-direction: row;
   margin-left: 3%;
@@ -28,8 +28,9 @@
 .header-dark{
   display: flex;
   flex-direction: row;
+  height:55px;
   margin-left: 3%;
-  margin-top: 1%;
+  margin-top: 0%;
   color:white;
   
 }
@@ -700,6 +701,19 @@ input.log{
     margin-top: 10px;
 }
 
+.logout-btn{
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  right:1%;
+  width: 10%;
+  padding: 7px;
+  border-radius: 10px;
+  background-color: rgb(70, 82, 248);
+  color: white;
+  cursor: pointer;
+}
+
 .log-btn:hover{
   background-color: rgb(40, 18, 238);
   color:white;
@@ -752,5 +766,14 @@ a.log{
   background-color: rgb(40, 18, 238);
   color:white;
   transform: scale(1.03);
+}
+
+.foot{
+  position: fixed;
+    height: 80px;
+    bottom: 0;
+    width: 100%;
+  background-color: #6f72ff;
+  color: #ffffff;
 }
 

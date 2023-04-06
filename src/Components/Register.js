@@ -12,7 +12,6 @@ export default function Register({handleReg2, toggleReg}) {
       console.log(error);
   };
   const navigate = useNavigate;
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [name, setName] = useState('') 
   const [password, setPassword] = useState('') 
@@ -49,18 +48,6 @@ export default function Register({handleReg2, toggleReg}) {
             name="name"
             className="log"
             onChange={({ target }) => setName(target.value)}/>
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            className="log"
-            onChange={({ target }) => setUsername(target.value)}/>
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            className="log"
-            onChange={({ target }) => setPassword(target.value)}/>
           <button className="reg-btn" type="submit">register</button>
           <h3 className={user? 'show' : 'hide'} >Registered Successfully</h3>
           

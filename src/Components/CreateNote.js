@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Note from './Note';
 import noteService from '../services/notes'
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   MDBContainer,
@@ -13,7 +12,7 @@ from 'mdb-react-ui-kit';
 
 import userService from '../services/users'
 import loginService from '../services/login'
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function CreateNote({dark, reg}) {
   const [notes, setNotes] = useState([]);
@@ -22,11 +21,12 @@ export default function CreateNote({dark, reg}) {
   const [searchTerm, setSearchTerm]=useState('');
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
-  const [login, setLogin] = useState(false);
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState(false)
+  const [cook, setCook]=useState(false);
+  const navigate=useNavigate();
   const [note, setNote] = useState({
     title:"",
     content:"",
@@ -35,27 +35,63 @@ export default function CreateNote({dark, reg}) {
     file:"",
     pin:false
   });
-  const notify = () => toast("You are logged in");
+
 
   const handlePin= (note) =>{
     setPin(true)
   }
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      console.log('ekam')
+      const user = JSON.parse(loggedUserJSON)
+      noteService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('');
+      console.log(user.id)
+      userService.getOne(user.id).then(noteList => {
+        for(let i=0; i<noteList.length; i++){
+         setNotes((prevValue)=>{
+          if(prevValue){
+            return [...prevValue, noteList[i]];
+          }
+          else{
+            return [noteList[i]]
+          }
+         })
+        }
+      setLogged(!logged);
+      
+    })
+      
+    }
+    
+  }, [])
+
   const handleLogin = async (event) => {
     
     event.preventDefault()
     console.log('logging in with', username, password);
-    setLogin(!login);
-    console.log(login)
+    setLogged(!logged);
+    
     try {
-        const user = await loginService.login({
+          const user = await loginService.login({
           username, password,
+
+
         })
+        window.localStorage.setItem(
+          'loggedNoteappUser', JSON.stringify(user)
+        )
+        
         noteService.setToken(user.token)
         setUser(user)
         setUsername('')
         setPassword('');
         console.log(user.id)
+        if(cook==false){
         userService.getOne(user.id).then(noteList => {
           for(let i=0; i<noteList.length; i++){
            setNotes((prevValue)=>{
@@ -66,17 +102,18 @@ export default function CreateNote({dark, reg}) {
               return [noteList[i]]
             }
            })
-           console.log(notes)
           }
-          notify()
-        setLogged(!login);
-      })
+        setLogged(!logged);
+        
+      })}
       } catch (exception) {
         alert('Wrong credentials')
         setTimeout(() => {
         }, 5000)
       }
   }
+
+  
 
   
 
@@ -180,6 +217,7 @@ export default function CreateNote({dark, reg}) {
   }
 
   const handleSearchChange = (id) => {
+    setNotes(null);
     userService.getOne(user.id).then(noteList => {
       for(let i=0; i<noteList.length; i++){
        setNotes((prevValue)=>{
@@ -193,6 +231,13 @@ export default function CreateNote({dark, reg}) {
        console.log(notes)
       }
   })
+  }
+
+  const handleLogout = () =>{
+    window.localStorage.removeItem('loggedNoteappUser')
+    setLogged(!logged);
+    navigate('/React-Projects')
+    setNotes(null);
   }
 
   return (
@@ -246,7 +291,9 @@ export default function CreateNote({dark, reg}) {
       
 
 
-      
+      <button onClick={handleLogout} className=" logout-btn" size="lg" >
+        LOGOUT
+      </button>
     <form className='create-form' style={{backgroundColor:color}} >
         { isExpanded && 
         (<input  value={note.title} type='text' placeholder='Take a note' name='title' onChange={handleChange}  style={{backgroundColor:color} } />) }

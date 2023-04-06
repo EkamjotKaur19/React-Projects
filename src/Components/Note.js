@@ -3,11 +3,19 @@ import Popup from './Popup'
 import EditPop from './EditPop'
 import Download from './Download'
 import noteService from '../services/notes'
+import copy from "copy-to-clipboard";  
 
 export default function Note({ onDelete, id, setNote, setNotes, notes, editNote, note, color, file, pin, showpin, icons}) {
   const [isOpen, setIsOpen] = useState(false);
   const [displayForm, setForm] = useState(false);
   const [downPop, setDownPop]=useState(false)
+  const [copyText, setCopyText] = useState('');
+  
+    
+    const copyToClipboard = () => {
+       copy(note.content);
+       alert(`You have copied "${note.content}"`);
+    }
   
 
   function handleEdit(e) {
@@ -62,7 +70,7 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
         {file!==" " && <img className='note-img' src={file} alt=""  onClick={handlePop} />}
         <h1 >{note.title}</h1>
         
-        <p onClick={togglePopup}>{file===" " && note.content!==undefined? note.content.substring(0,140):note.content.substring(0,21)}</p>
+        <p onClick={togglePopup} value={note.content} >{file===" " && note.content!==undefined?  note.content.substring(0,140):note.content.substring(0,21)}</p>
       </div>
       <div className="note-btns">
         <button className={icons? 'note-button show' : 'note-button hide'}  onClick={() => onDelete(id, note)}>
@@ -75,6 +83,10 @@ export default function Note({ onDelete, id, setNote, setNotes, notes, editNote,
 
         <button className={icons? 'note-button show' : 'hide'} onClick={() =>  handleDownPop()}>
           Download
+        </button>
+
+        <button className={icons? 'note-button show' : 'hide'} onClick={copyToClipboard}>
+          Copy 
         </button>
       </div>
     </div>
