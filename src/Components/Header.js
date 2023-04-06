@@ -1,14 +1,10 @@
-import React, { useState } from 'react'
-import Register from './Register';
+import React  from 'react'
+import ref from "../images/p3.png"
 
 export default function Header({dark}) {
-    
-
-    
-
     const logo = (
         <img
-        src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png"
+        src={ref}
         alt="logo"
         className='logo'
         />
@@ -17,15 +13,8 @@ export default function Header({dark}) {
         <>
         <div className={!dark?'header':'header-dark'}>
             {logo}
-            <span className={!dark?'head':'head darker'}>Keep</span>
-            
-
-            
-              
         </div>
         <hr className={!dark?'head-hr':'head-hr-dark'}/>
-
-        
         </>
     );
 }

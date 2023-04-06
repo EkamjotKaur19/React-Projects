@@ -1,11 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Note from './Note';
 import noteService from '../services/notes'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  MDBContainer,
+  MDBCol,
+  MDBRow,
+  MDBInput,
+}
+from 'mdb-react-ui-kit';
 
 import userService from '../services/users'
 import loginService from '../services/login'
-import Register from './Register';
-import Login from './Login';
 import { Link } from 'react-router-dom';
 
 export default function CreateNote({dark, reg}) {
@@ -13,13 +20,9 @@ export default function CreateNote({dark, reg}) {
   const [isExpanded, setExpanded] = useState(false);
   const [color, setColor] = useState('white');
   const [searchTerm, setSearchTerm]=useState('');
-  
   const [file, setFile] = useState('');
   const [pin, setPin] = useState(false);
-  const [showpin, setShowPin] = useState(false);
-  const [icons, setIcons] = useState(true);
   const [login, setLogin] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [logged, setLogged] = useState(false);
@@ -32,15 +35,14 @@ export default function CreateNote({dark, reg}) {
     file:"",
     pin:false
   });
+  const notify = () => toast("You are logged in");
 
-  useEffect(() => {
-    console.log('effect')
-    
-  }, [])
-
-  
+  const handlePin= (note) =>{
+    setPin(true)
+  }
 
   const handleLogin = async (event) => {
+    
     event.preventDefault()
     console.log('logging in with', username, password);
     setLogin(!login);
@@ -66,32 +68,22 @@ export default function CreateNote({dark, reg}) {
            })
            console.log(notes)
           }
+          notify()
         setLogged(!login);
       })
       } catch (exception) {
         alert('Wrong credentials')
         setTimeout(() => {
-          setErrorMessage(null)
         }, 5000)
       }
   }
 
   
 
-  const handleSearchChange = () => {
-    noteService
-      .getAll()
-      .then(response => {
-        setNotes(response.data)
-      })
-  }
-
   const addNote = (newNote) =>{ 
     note.colors=color
     note.file=file
     note.pin=pin
-    {console.log(pin)}
-    
     setColor('white');
     noteService.create(newNote).then(response => setNotes((prevValue) => {
       if(prevValue){
@@ -113,7 +105,6 @@ export default function CreateNote({dark, reg}) {
     })
   }
 
-
   const deleteNotes =(id, note) =>{
     noteService.delNote(id, note).then( response => {
       setNotes((preValue) => {
@@ -122,12 +113,8 @@ export default function CreateNote({dark, reg}) {
     })
   }
 
-  
-
   const handleChange = (e) => {
     const {name, value } = e.target;
-    
-
     setNote((prevVal) => {
       return {
         ...prevVal,
@@ -135,16 +122,12 @@ export default function CreateNote({dark, reg}) {
       
       };
     });
-
-    
   }
 
   const handleUpload = (e) => {
-
       console.log(e.target.files[0]);
       note.file=URL.createObjectURL(e.target.files[0]);
-      setFile(URL.createObjectURL(e.target.files[0]))
-    
+      setFile(URL.createObjectURL(e.target.files[0]))   
   }
 
   const handleBlue = () => {
@@ -186,7 +169,6 @@ export default function CreateNote({dark, reg}) {
     });
     setFile('');
     setPin(false);
-    
     event.preventDefault();
   }
 
@@ -195,39 +177,62 @@ export default function CreateNote({dark, reg}) {
     noteService.getOne(id, note).then(response => {
       setNotes(notes.filter((note)=>note.content.toLowerCase().includes(searchTerm.toLowerCase())));
     })
-    
   }
 
-  const handlePin = () => {
-    note.pin=true;
-    setPin(true);
+  const handleSearchChange = (id) => {
+    userService.getOne(user.id).then(noteList => {
+      for(let i=0; i<noteList.length; i++){
+       setNotes((prevValue)=>{
+        if(prevValue){
+          return [...prevValue, noteList[i]];
+        }
+        else{
+          return [noteList[i]]
+        }
+       })
+       console.log(notes)
+      }
+  })
   }
-
-  
-  
 
   return (
     <>
       {!logged && 
-      <div className="log-cont">
-      <div className="log-wrapper">
-          <h1 className="log-title">SIGN IN</h1>
-          <form className="log" onSubmit={handleLogin} >
-          <input  type="text"
-              value={username}
-              name="Username"
-              className="log"
-              onChange={({ target }) => setUsername(target.value)}/>
-          <input  type="password"
-              value={password}
-              name="Password"
-              className="log"
-              onChange={({ target }) => setPassword(target.value)}/>
-          <button className="log-btn" type="submit">LOGIN</button>
-          <Link to='/register' ><button className="log-text" > New user? Register First</button></Link> 
-          </form>
-      </div>
-    </div>
+      <form onSubmit={handleLogin} > 
+      <MDBContainer fluid className="p-3  my-2">
+  
+        <MDBRow >
+  
+          <MDBCol col='6' md='6'>
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid" alt=''/>
+          </MDBCol>
+  
+          <MDBCol col='6' md='5'>
+          <p className="text-center h2 fw-bold mx-1 mx-md-3 mt-2 mb-2">Sign In</p>
+  
+  
+            <MDBInput wrapperClass='mb-1' label='Username' id='formControlLg' type='text' size="lg" value={username} onChange={({ target }) => setUsername(target.value)}/>
+            <MDBInput wrapperClass='mb-1' label='Password' id='formControlLg' type='password' size="lg" value={password} onChange={({ target }) => setPassword(target.value)}/>
+  
+  
+            {/* <div className="d-flex justify-content-between mx-3 mb-2">
+              <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
+              <a href="!#">Forgot password?</a>
+            </div>*/}
+  
+            <button className="mb-2 w-100 log-btn" size="lg">Sign in</button>
+  
+            <Link to='/signup' >
+            <button className="mb-4 w-100 log-btn" size="lg" >
+              New User? Register First
+            </button>
+            </Link>
+          </MDBCol>
+  
+        </MDBRow>
+  
+      </MDBContainer>
+      </form>
        }
     
     
@@ -235,7 +240,7 @@ export default function CreateNote({dark, reg}) {
       <div className="search-box">
         <button className={!dark?"search-btn": 'search-btn dark'} onClick={(id)=>{searchNote(id)}} ><i className="fa-solid fa-magnifying-glass"></i></button>
         <input className={!dark?'search-bar':'search-bar-dark'} type='text' onChange={(event) => setSearchTerm(event.target.value)} />
-        <button className={!dark?"search-cross": 'search-cross-dark'} onClick={handleSearchChange} ><i className="fa-solid fa-xmark"></i></button>
+        <button className={!dark?"search-cross": 'search-cross-dark'} onClick={(id) => { handleSearchChange(id)}} ><i className="fa-solid fa-xmark"></i></button>
       </div>
 
       
@@ -260,8 +265,8 @@ export default function CreateNote({dark, reg}) {
           
         </p>
         {isExpanded && <div className="bottom">
+          <input  type="file" className='image ' onChange={handleUpload}  /> 
           <div className="colors">
-            <input  type="file" className='col image ' onChange={handleUpload}  /> 
             <button type="button" className="col col-1 btn " onClick={handleBlue} ></button>
             <button type="button" className="col col-2 btn " onClick={handleGreen}></button>
             <button type="button" className="col col-3 btn " onClick={handleYellow}></button>
@@ -270,18 +275,17 @@ export default function CreateNote({dark, reg}) {
             <button type="button" className="col col-6 btn " onClick={handleSixth}></button>
             
           </div>
-          <button className='close btns' onClick={submitButton}>
-            Close
-          </button>
+          <div className="btnss">
+            
 
-          <button type='button' className='pin-btn btns' onClick={handlePin}>
-            Pin
-          </button>
+            <button type='button' className='pin-btn btns' onClick={handlePin} >
+              Pin
+            </button>
 
-          
-              
-
-          
+            <button className='pin-btn btns' onClick={submitButton}>
+              Close
+            </button>
+          </div>
         </div>}
         
       </form>
@@ -299,8 +303,7 @@ export default function CreateNote({dark, reg}) {
             color={note.colors}
             file={note.file!=='' ? note.file : ' ' }
             pin={note.pin}
-            showpin={showpin}
-            icons={icons}
+            icons='true'
           />
       )) : null}
     </div> }

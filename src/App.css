@@ -18,10 +18,11 @@
 }
 
 .header{
+  height:50px;
   display: flex;
   flex-direction: row;
   margin-left: 3%;
-  margin-top: 1%;
+  margin-top: 0%;
 }
 
 .header-dark{
@@ -36,6 +37,7 @@
 .head{
   font-weight: 450;
   font-size: 24px;
+  margin-top: 7px;
   padding-left: 10px;
   color: rgb(114, 112, 112);
 }
@@ -45,8 +47,8 @@
 }
 
 .logo{
-  width: 3%;
-  height: 5%;
+  width: 5%;
+  height: 60px;
 }
 
 .mode{
@@ -68,12 +70,19 @@
   padding: 0;
 }
 
+@media screen and (min-width: 280px) and (max-width: 1080px) {
+  .header{
+    display: flex;
+    flex-direction: column;
+  }
+  }
+
 
 /*Search Box*/
 .search-box{
   position: absolute;;
   top:2%;
-  left:20%;
+  left:18%;
   width: 55%;
   display: flex;
   flex-direction: row;
@@ -173,7 +182,7 @@
 
 .create-form{
   position: relative;
-  width: 660px;
+  width: 50%;
   margin: 32px auto 50px auto;
   background: #fff;
   padding: 7px;
@@ -205,6 +214,17 @@ form textarea {
   flex-direction: row;
 }
 
+@media screen and (min-width: 280px) and (max-width: 1080px) {
+  .bottom{
+    display: flex;
+    flex-direction: column;
+  }
+  .image{
+    width:100%;
+    background-color: #eebb14;
+  }
+}
+
 .col{
   width:6%;
   height: 30px;
@@ -219,16 +239,14 @@ form textarea {
   width: 100vw;
 }
 
-.close{
-  position: relative;
-  right:0px;
-}
 
 
 
 
 .image{
-  width:200px;
+  width:90%;
+  border-radius: 25px;
+  height: 70%;
   background-color: #eebb14;
 }
 
@@ -268,41 +286,33 @@ form textarea {
   background-color: white;
 }
 
-
-.close {
-  position: absolute;
+.btnss{
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 16px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2%;
   background: rgb(255, 200, 18);
   color: #fff;
   border: none;
-  width: 66px;
-  height: 36px;
+  width: 20%;
+  height: 40%;
+  margin-bottom: 2%;
   box-shadow: 0 1px 3px rgb(165, 165, 165);
   cursor: pointer;
   outline: none;
 }
 
-.canvas{
-  position: relative;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  padding: 5px;
-  text-decoration: none;
-  
-  right:13%;
-  background: rgb(255, 200, 18);
-  color: #fff;
-  border: none;
-  width: 150px;
-  height: 36px;
-  box-shadow: 0 1px 3px rgb(165, 165, 165);
-  cursor: pointer;
-  outline: none;
+btnss{
+  display: flex;
+  flex-direction: column;
 }
+
 
 .btns:hover{
   background-color: rgb(226, 174, 4);
@@ -312,7 +322,6 @@ form textarea {
 
 .pin-btn{
   position: relative;
-  right:13%;
   background: rgb(255, 200, 18);
   color: #fff;
   border: none;
@@ -330,15 +339,21 @@ form textarea {
 
 .note {
   background: #ffffff;
-  width: 300px;
+  width: 270px;
   border-radius: 7px;
   height:270px;
   box-shadow: 0 2px 5px rgb(175, 175, 175);
   padding: 10px;
-  margin: 16px;
+  margin-left: 45px;
+  margin-bottom: 40px;
   float: left;
-  margin-right: 0;
 }
+
+.note-btns{
+  position: relative;
+  
+}
+
 
 .note:hover{
   transform: scale(1.05);
@@ -419,7 +434,7 @@ form textarea {
   position: relative;
   width: 45%;
   margin: 0 auto;
-  min-height: 200px;
+  min-height: 800px;
   top:10%;
   font-size: 1.2em;
   margin-top: calc(100vh - 85vh - 20px);
@@ -434,8 +449,8 @@ form textarea {
   position: absolute;
   width: 45%;
   margin: 0 auto;
-  min-height: 200px;
-  top:10%;
+  min-height: 350px;
+  top:6%;
   left:30%;
   font-size: 1.2em;
   margin-top: calc(100vh - 85vh - 20px);
@@ -443,7 +458,6 @@ form textarea {
   border-radius: 15px;
   padding: 20px;
   border: 1px solid #999;
-  overflow: auto;
 }
 
 .box-pop-img {
@@ -459,7 +473,6 @@ form textarea {
   border-radius: 15px;
   padding: 20px;
   border: 1px solid #999;
-  overflow: auto;
 }
 
 .pop-img{
@@ -493,10 +506,10 @@ form textarea {
   cursor: pointer;
   position: fixed;
   right: 26%;
-  top: 54%;
+  top: 80%;
   border: none;
   outline: none;
-  background-color: white;
+  background-color: #eebb14;
   font-size: 18px;
 }
 
@@ -676,23 +689,21 @@ input.log{
 }
 
 .log-btn{
-  width: 40%;
     border: none;
-    font-size: 18px;
-    padding: 15px 20px;
-    background-color: rgb(53, 53, 53);
+    font-size: 20px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    background-color: rgb(70, 82, 248);
     color: white;
     cursor: pointer;
     margin-bottom: 10px;
-    position: relative;
-    left:30%;
     margin-top: 10px;
 }
 
 .log-btn:hover{
-  background-color: rgb(15, 15, 15);
+  background-color: rgb(40, 18, 238);
   color:white;
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 a.log{
@@ -725,16 +736,21 @@ a.log{
 
 
 .reg-btn{
-  width: 40%;
-    border: none;
-    font-size: 18px;
-    padding: 10px 5px;
-    background-color: rgb(53, 53, 53);
+  width:40%;
+  border: none;
+    font-size: 20px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    background-color: rgb(70, 82, 248);
     color: white;
     cursor: pointer;
-    margin-bottom: 3px;
-    position: relative;
-    left:30%;
-    margin-top: 2px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.reg-btn:hover{
+  background-color: rgb(40, 18, 238);
+  color:white;
+  transform: scale(1.03);
 }
 

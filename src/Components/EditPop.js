@@ -11,10 +11,6 @@ export default function EditPop({displayForm, handleEdit, setForm, note}) {
         setInpCon(e.target.value);
     }
 
-    const handlePin = (e) => {
-        note.pin=!note.pin;
-    }
-
   return (
     <div >
         <div className="popup-box">

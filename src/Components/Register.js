@@ -1,9 +1,16 @@
 import React, {useState} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google';
 
 import registerService from '../services/register'
 
 export default function Register({handleReg2, toggleReg}) {
+  const responseMessage = (response) => {
+      console.log(response);
+  };
+  const errorMsg = (error) => {
+      console.log(error);
+  };
   const navigate = useNavigate;
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
@@ -61,6 +68,7 @@ export default function Register({handleReg2, toggleReg}) {
       <Link to='/React-Projects/' ><button className='reg-btn' onClick={toggleReg}>
           Close
         </button></Link>
+        <GoogleLogin onSuccess={responseMessage} onError={errorMsg} />
       </div>
       </div>
   )
