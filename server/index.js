@@ -6,7 +6,7 @@ const logger = require('./utils/logger')
 const server = http.createServer(appi)
 
 
-server.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`)
+server.listen(3000, () => {
+  logger.info(`Server running on port 3000`)
 })
 

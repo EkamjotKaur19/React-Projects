@@ -1,6 +1,7 @@
 {
-  "name": "notes-app",
+  "name": "reflect",
   "version": "0.1.0",
+  "main":"./server.index.js",
   "homepage": "https://EkamjotKaur19.github.io/React-Projects",
   "private": true,
   "dependencies": {
@@ -25,7 +26,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
+    "start": "cd ./server && node index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
